@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>ULYAS XİZM</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+  background:radial-gradient(circle at top,#350000,#000);
+  height:100vh;
+  color:#ff1a1a;
+  overflow:hidden;
+}
+
+/* ARKA PLAN PARÇACIK */
+canvas{
+  position:fixed;
+  inset:0;
+  z-index:-1;
+}
+
+/* GİRİŞ */
+#loginBox{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  width:90%;
+  max-width:400px;
+  background:#000;
+  border:2px solid red;
+  box-shadow:0 0 50px red;
+  padding:30px;
+  text-align:center;
+  animation:fadeIn 1.3s;
+}
+
+@keyframes fadeIn{
+  from{opacity:0;transform:translate(-50%,-60%)}
+  to{opacity:1;transform:translate(-50%,-50%)}
+}
+
+h1{
+  letter-spacing:4px;
+  text-shadow:0 0 20px red;
+}
+
+.subtitle{
+  margin-top:10px;
+  font-size:13px;
+  letter-spacing:2px;
+  animation:pulse 1.5s infinite alternate;
+}
+
+.subtitle span{
+  font-weight:bold;
+  text-shadow:0 0 25px red;
+}
+
+@keyframes pulse{
+  from{opacity:.6}
+  to{opacity:1}
+}
+
+input{
+  width:100%;
+  margin-top:16px;
+  padding:13px;
+  background:#000;
+  border:1px solid darkred;
+  color:red;
+}
+
+input:focus{
+  outline:none;
+  border-color:red;
+  box-shadow:0 0 15px red;
+}
+
+button{
+  width:100%;
+  margin-top:22px;
+  padding:14px;
+  background:red;
+  color:#000;
+  font-weight:bold;
+  letter-spacing:4px;
+  border:none;
+  cursor:pointer;
+  box-shadow:0 0 25px red;
+  transition:.3s;
+}
+
+button:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 50px red;
+}
+
+#error{
+  display:none;
+  margin-top:10px;
+  font-size:13px;
+}
+
+/* PANEL */
+#panel{
+  display:none;
+  padding:30px;
+  animation:fadeIn 1s;
+}
+
+.panelBox{
+  max-width:650px;
+  margin:auto;
+  background:#000;
+  border:2px solid red;
+  box-shadow:0 0 40px red;
+  padding:25px;
+}
+
+.panelBox h2{
+  text-align:center;
+  margin-bottom:20px;
+  text-shadow:0 0 20px red;
+}
+
+.card{
+  margin-bottom:14px;
+  padding:12px;
+  border-left:4px solid red;
+  background:rgba(255,0,0,.05);
+}
+
+/* WHATSAPP */
+.whatsapp{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  background:#000;
+  border:2px solid red;
+  color:red;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:28px;
+  text-decoration:none;
+  box-shadow:0 0 30px red;
+  animation:pulse 1s infinite;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="bg"></canvas>
+
+<div id="loginBox">
+  <h1>ULYAS XİZM</h1>
+  <div class="subtitle">
+    Sosyal medya ile alakalı her şey için <span>TIKLA</span>
+  </div>
+
+  <input id="user" placeholder="KULLANICI ADI">
+  <input id="pass" type="password" placeholder="ŞİFRE">
+  <button onclick="login()">GİRİŞ YAP</button>
+  <div id="error">LÜTFEN BİLGİ GİR</div>
+</div>
+
+<div id="panel">
+  <div class="panelBox">
+    <h2>ULYAS XİZM</h2>
+
+    <div class="card">Instagram • TikTok • YouTube işlemleri</div>
+    <div class="card">Telegram • WhatsApp hizmetleri</div>
+    <div class="card">Her platform icin bot basma çözümleri</div>
+    <div class="card">Yazılım öğrenme & sosyal medya gelişimi</div>
+    <div class="card"><b>HER TÜRLÜ SOSYAL MEDYA İÇİN TEK ADRES</b></div>
+  </div>
+</div>
+
+<a class="whatsapp" href="https://wa.me/639753538458" target="_blank">☎</a>
+
+<script>
+/* GİRİŞ */
+function login(){
+  const loginBox = document.getElementById("loginBox");
+  const panelBox = document.getElementById("panel");
+  const errorBox = document.getElementById("error");
+  const u = document.getElementById("user").value;
+  const p = document.getElementById("pass").value;
+
+  if(u !== "" && p !== ""){
+    loginBox.style.display="none";
+    panelBox.style.display="block";
+  }else{
+    errorBox.style.display="block";
+  }
+}
+
+/* PARÇACIK */
+const c=document.getElementById("bg");
+const ctx=c.getContext("2d");
+
+function resize(){
+  c.width=innerWidth;
+  c.height=innerHeight;
+}
+resize();
+addEventListener("resize",resize);
+
+let dots=[];
+for(let i=0;i<200;i++){
+  dots.push({
+    x:Math.random()*c.width,
+    y:Math.random()*c.height,
+    r:Math.random()*2+1,
+    s:Math.random()*1.2+.4
+  });
+}
+
+function draw(){
+  ctx.clearRect(0,0,c.width,c.height);
+  ctx.fillStyle="rgba(255,0,0,.7)";
+  dots.forEach(d=>{
+    d.y+=d.s;
+    if(d.y>c.height)d.y=0;
+    ctx.beginPath();
+    ctx.arc(d.x,d.y,d.r,0,Math.PI*2);
+    ctx.fill();
+  });
+  requestAnimationFrame(draw);
+}
+draw();
+</script>
+
+</body>
+</html>
